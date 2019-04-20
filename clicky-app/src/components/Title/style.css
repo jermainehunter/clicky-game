@@ -1,8 +1,16 @@
-.title {
+.header {
   width: 100%;
   text-align: center;
   font-size: 3rem;
   text-decoration: underline;
-  color: #2A77AE;
+  font-family: 'Heebo', sans-serif;
+  color: #222222;
   margin-bottom: 50px;
+}
+
+.title {
+  float: left;
+}
+.scores {
+  float: right;
 }
