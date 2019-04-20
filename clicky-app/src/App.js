@@ -11,16 +11,16 @@ class App extends Component {
     score: 0,
     highscore: 0
   };
-//Below needs to be the click function that records click
+  //Below needs to be the click function that records click
   clickCount = id => {
     this.state.friends.find((o, i) => {
-      if(o.id === id) {
+      if (o.id === id) {
         if (friends[i].count === 0) {
-          friends[i].count = friends[i].count +1;
-          this.setState({score : this.state.score +1}, function(){
+          friends[i].count = friends[i].count + 1;
+          this.setState({ score: this.state.score + 1 }, function () {
             console.log(this.state.score);
           });
-          this.state.friends.sort(() => Math.random() -0.5);
+          this.state.friends.sort(() => Math.random() - 0.5);
           return true;
         } else {
           this.gameOver();
@@ -30,6 +30,20 @@ class App extends Component {
     })
   };
 
+  gameOver = () => {
+    if (this.state.score > this.state.highscore) {
+      this.setState({ highscore: this.state.score }, function () {
+        console.log(this.state.highscore);
+      });
+    }
+    this.state.friends.forEach(friend => {
+      FriendCard.count = 0;
+    });
+    alert(`Game Over :( /nscore: ${this.state.score}`);
+    this.setState({ score: 0 });
+    return true;
+  };
+
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
@@ -37,13 +51,11 @@ class App extends Component {
         <Title>The Clicky Game</Title>
         {this.state.friends.map(friend => (
           <FriendCard
-            removeFriend={this.removeFriend}
+            clickCount={this.clickCount}
             id={friend.id}
             key={friend.id}
-            name={friend.name}
             image={friend.image}
-            occupation={friend.occupation}
-            location={friend.location}
+          // location={friend.location}
           />
         ))}
       </Wrapper>

@@ -9,7 +9,7 @@ function Title(props) {
         <div className="title">{props.children}</div>
 
         <div className="scores">
-          Score: {props.score} High Score: {props.highscore}
+          Score: {props.score} 0 | High Score: 0{props.highscore}
         </div>
       </div>
    
