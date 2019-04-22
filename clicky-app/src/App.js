@@ -2,53 +2,56 @@ import React, { Component } from "react";
 import FriendCard from "./components/FriendCard";
 import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
+import Navbar from "./components/Navbar";
 import friends from "./friends.json";
+import "./index.css";
+
 
 class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
     friends,
     score: 0,
-    highscore: 0
+    highscore: 0,
+    unselectedFriends: friends,
+    rightWrong: "",
+    clicked: []
   };
+
+
   //Below needs to be the click function that records click
-  clickCount = id => {
-    this.state.friends.find((o, i) => {
-      if (o.id === id) {
-        if (friends[i].count === 0) {
-          friends[i].count = friends[i].count + 1;
-          this.setState({ score: this.state.score + 1 }, function () {
-            console.log(this.state.score);
-          });
-          this.state.friends.sort(() => Math.random() - 0.5);
-          return true;
-        } else {
-          this.gameOver();
-        }
-      }
-
-    })
-  };
-
-  gameOver = () => {
-    if (this.state.score > this.state.highscore) {
-      this.setState({ highscore: this.state.score }, function () {
-        console.log(this.state.highscore);
-      });
+  shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
-    this.state.friends.forEach(friend => {
-      FriendCard.count = 0;
-    });
-    alert(`Game Over :( /nscore: ${this.state.score}`);
-    this.setState({ score: 0 });
-    return true;
+    return array;
   };
+
+  handleClick = id => {
+    if (this.state.clicked.indexOf(id) === -1) {
+      this.handleIncrement();
+      //concat.() will concatonate the clicked id into the clicked array
+      this.setState({ clicked: this.state.clicked.concat(id) })
+    } else {
+      this.handleReset();
+    }
+  };
+
+
+
+
 
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
       <Wrapper>
-        <Title>The Clicky Game</Title>
+        <Navbar
+          message={this.state.message}
+          score={this.state.score}
+          highscore={this.state.highscore}
+        />
+        <Title />
         {this.state.friends.map(friend => (
           <FriendCard
             clickCount={this.clickCount}
