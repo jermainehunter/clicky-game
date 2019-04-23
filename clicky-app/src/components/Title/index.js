@@ -4,7 +4,7 @@ import "./style.css";
 function Title(props) {
   return (
     
-      <div className="header">
+      <div className="header jumbotron">
 
 
         <p>Click on an image to earn points, but don't click on any more than once!</p>

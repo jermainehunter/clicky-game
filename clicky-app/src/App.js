@@ -7,6 +7,15 @@ import friends from "./friends.json";
 import "./index.css";
 
 
+  //function that handles shuffleArray
+  const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+  
 class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
@@ -20,18 +29,26 @@ class App extends Component {
 
 
   //Below needs to be the click function that records click
-  shuffleArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
+
+
+
+
+
+  handleShuffle = () => {
+    let shuffledArray = shuffleArray(friends);
+    this.setState({ friends: shuffledArray })
+  }
+
+ // When the component mounts, shuffle the cards
+ componentDidMount() {
+  this.handleShuffle();
+}
 
   handleClick = id => {
+    // alert(this.state.friends);
     if (this.state.clicked.indexOf(id) === -1) {
       this.handleIncrement();
-      //concat.() will concatonate the clicked id into the clicked array
+      //concat.() will concatonate the clicked id to the clicked array
       this.setState({ clicked: this.state.clicked.concat(id) })
     } else {
       this.handleReset();
@@ -39,6 +56,36 @@ class App extends Component {
   };
 
 
+  //function for handling incrementing the score
+  handleIncrement = () => {
+    const newScore = this.state.score + 1;
+    this.setState({
+      score: newScore,
+      rightWrong: ""
+    });
+    //conditional statement updating the highscore if 
+    //newScore is equal to or less tahn hight score 
+    if (newScore >= this.state.highscore) {
+      this.setState({ highscore: newScore });
+    }
+    //else if newScore is equal to 12 (which is getting all 12 right) 
+    //setState of the message to You've won
+    else if (newScore === 12) {
+      this.setState({ rightWrong: "You've Won!!" });
+    }
+    //after game is over, call the handleShuffle function
+    this.handleShuffle();
+  };
+
+  //function for resetting game
+  handleReset = () => {
+    this.setState({
+      score: 0,
+      highscore: this.state.highscore,
+      rightWrong: "Game Over!",
+      clicked: []
+    })
+  };
 
 
 
@@ -47,14 +94,17 @@ class App extends Component {
     return (
       <Wrapper>
         <Navbar
-          message={this.state.message}
           score={this.state.score}
           highscore={this.state.highscore}
+          rightWrong={this.state.rightWrong}
         />
         <Title />
         {this.state.friends.map(friend => (
           <FriendCard
-            clickCount={this.clickCount}
+            handleClick={this.handleClick}
+            handleIncrement={this.handleIncrement}
+            handleReset={this.handleReset}
+            handleShuffle={this.handleShuffle}
             id={friend.id}
             key={friend.id}
             image={friend.image}

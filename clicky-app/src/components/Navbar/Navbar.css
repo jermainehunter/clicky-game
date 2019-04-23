@@ -24,14 +24,7 @@
     background-color: #555555 !important;
 }
 
-.desc-normal {
-    color: #fff;
-}
-
-.desc-correct {
-    color: #0f0;
-}
-
-.desc-incorrect {
-    color: #f00;
+.current-score{
+    padding-left:100px;
+    
 }

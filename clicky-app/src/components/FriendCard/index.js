@@ -3,7 +3,8 @@ import "./style.css";
 
 const FriendCard = props => (
   
-    <div className="card"
+    <div 
+    className="card"
     value={props.id}
     //onclick function passes props.id as param
     onClick={() => props.handleClick(props.id)}
