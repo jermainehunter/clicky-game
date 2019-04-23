@@ -7,15 +7,9 @@ import friends from "./friends.json";
 import "./index.css";
 
 
-  //function that handles shuffleArray
-  const shuffleArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-  
+
+
+
 class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
@@ -35,14 +29,22 @@ class App extends Component {
 
 
   handleShuffle = () => {
-    let shuffledArray = shuffleArray(friends);
+    let shuffledArray = this.shuffleArray(friends);
     this.setState({ friends: shuffledArray })
   }
 
- // When the component mounts, shuffle the cards
- componentDidMount() {
-  this.handleShuffle();
-}
+  //function that handles shuffleArray
+shuffleArray = array => {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+  // When the component mounts, shuffle the cards
+  componentDidMount() {
+    this.handleShuffle();
+  }
 
   handleClick = id => {
     // alert(this.state.friends);
@@ -57,12 +59,19 @@ class App extends Component {
 
 
   //function for handling incrementing the score
+
   handleIncrement = () => {
+var that = this;
     const newScore = this.state.score + 1;
     this.setState({
       score: newScore,
-      rightWrong: ""
+      rightWrong: "You've scored a point!"
+
     });
+
+    setTimeout(function () {
+      that.setState({ rightWrong: "" })
+    }, 1000)
     //conditional statement updating the highscore if 
     //newScore is equal to or less tahn hight score 
     if (newScore >= this.state.highscore) {
@@ -97,7 +106,9 @@ class App extends Component {
           score={this.state.score}
           highscore={this.state.highscore}
           rightWrong={this.state.rightWrong}
+          
         />
+        
         <Title />
         {this.state.friends.map(friend => (
           <FriendCard
